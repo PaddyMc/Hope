@@ -12,10 +12,11 @@ class Barrier(types.KX_GameObject):
         count = 0
         for gobj in self.scene.objects:
             if "enemy_nav" in gobj.name:
+                #pass
                 count += 1                
                 #print(count)
           
-        if not count:
+        if not count:#not count:
             movement = Vector((0,0,1))
             
             self.applyMovement(movement, True)

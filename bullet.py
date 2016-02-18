@@ -20,11 +20,16 @@ class Bullet(types.KX_GameObject):
         self.worldPosition += self.vel
         
         sound = self.cont.actuators["Sound"]
-        self.cont.activate(sound)        
+        self.cont.activate(sound) 
+        
+        collision = self.cont.sensors["Collision"]       
         
         self.vel_accum += self.vel
         if self.vel_accum.magnitude > self.range:
             self.endObject()
+            
+        if not (collision):
+            self.endObject() 
 
 
 def main(cont):    

@@ -32,6 +32,7 @@ class PlayerClient(base.Hope):
         keyPressed = self.user.keyboard.keyDown            
         
         if keyPressed(events.EKEY):
+            #speed = 0.3
             movement = Vector((0,self.speed,0))
             #self.arm.controller[0].activate(animation)
             self.applyMovement(movement, True)
@@ -92,7 +93,8 @@ class PlayerClient(base.Hope):
         self.health = self.arm.children[0]["healt"] 
             
         if(self.health<0):
-            print("DEAD")         
+            pass
+            #print("DEAD")         
         
 def main(cont):
     

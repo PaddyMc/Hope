@@ -18,7 +18,7 @@ class Player(base.Hope):
         self.sense_range = 25
         self.enemy = None
         
-        self.weapon = self.children[2]
+        self.weapon = self.children[1]
         
         self.fireCommand = FireCommand(self.weapon)
         self.aimCommand = AimCommand(self.weapon)
@@ -37,11 +37,12 @@ class Player(base.Hope):
         keyPressed = strategyKey.keyDown                               
             
         if keyPressed(events.EKEY):
-            movement = Vector((0,self.speed,0))
+            speed = 0.5
+            movement = Vector((0,speed,0))
             #self.arm.controller[0].activate(animation)
             self.applyMovement(movement, True)
             
-        elif keyPressed(events.DKEY):
+        elif keyPressed(events.DKEY):            
             movement = Vector((0,-self.speed,0))
             self.applyMovement(movement, True)                                                       
         else:
@@ -49,7 +50,7 @@ class Player(base.Hope):
         
     def straif(self):
         keyPressed = strategyKey.keyDown
-        if keyPressed(events.AKEY):
+        if keyPressed(events.AKEY):            
             rotation = Vector((-self.speed,0,0))           
             self.applyMovement(rotation, True)    
             

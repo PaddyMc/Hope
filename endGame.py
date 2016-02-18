@@ -5,8 +5,8 @@ class EndGame(types.KX_GameObject):
         self.cont = self.controllers[0]
         self.winner = 0        
                 
-        print(self.cont.actuators)
-        print(self.cont.sensors)
+        #print(self.cont.actuators)
+        #print(self.cont.sensors)
         
     def endGame(self):
         self.winner = self["healt"]
@@ -18,6 +18,7 @@ class EndGame(types.KX_GameObject):
         if(self.winner<=0):
             print("WINNER")
             self.cont.activate(endGame)
+            
             #pass
                                
                 

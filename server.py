@@ -43,21 +43,31 @@ class Server:
     
     def send(self):
         
-        scene = logic.getCurrentScene()
-        
-        #state = {(gobj.name, gobj["user"].name): list(gobj.worldPosition) \
-         #         for gobj in scene.objects \
-         #         if gobj.name == "Avatar"}
+        scene = logic.getCurrentScene()        
          
         for gobj in scene.objects:
             if gobj.name == "character":
-                state = {(gobj.name, gobj["user"].name): (list(gobj.worldPosition), list(gobj.worldOrientation.col[0].copy()), list(gobj.worldOrientation.col[1].copy()))}
+                state = {(gobj.name): (list(gobj.worldPosition), list(gobj.worldOrientation.col[0].copy()), list(gobj.worldOrientation.col[1].copy()))}
                 #self.worldOrientation.col[1].copy()
+        gameWinner = scene.objects["WinningCone"]
+        winningState = {(gameWinner.name): (gameWinner["healt"])}
+        
+        for gobj in scene.objects:
+            if "enemy_mesh" in gobj.name:
+                enemyState = {(gobj.name,gobj["healt"]) : (list(gobj.worldPosition), list(gobj.worldOrientation.col[0].copy()), list(gobj.worldOrientation.col[1].copy()))}
+                for addr in self.addr_user:
+                    self.socket.sendto(pickle.dumps(enemyState), addr) 
+        
+        for gobj in scene.objects:
+            if "player_mesh_basic.001" in gobj.name:
+                playerState = {(gobj.name) : (list(gobj.worldPosition), list(gobj.worldOrientation.col[0].copy()), list(gobj.worldOrientation.col[1].copy()))}
                   
         for addr in self.addr_user:
             self.socket.sendto(pickle.dumps(state), addr)
+            self.socket.sendto(pickle.dumps(playerState), addr)
+            self.socket.sendto(pickle.dumps(winningState), addr)
             
-server = Server()
+server = Server(host="172.17.9.243", port=9957)
             
 def receive():
     threadReceive = Thread(target=server.receive)
