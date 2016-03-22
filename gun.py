@@ -1,6 +1,7 @@
 from bge import logic,types,events
 from mathutils import Vector,Matrix
 import random
+from threading import Timer
 import time
 import math
 
@@ -8,14 +9,14 @@ class Gun(types.KX_GameObject):
     def __init__(self, own):
         self.cont = self.controllers[0]
         self.sen = self.cont.sensors
-        self.own = self.cont.owner
+        self.own = self.cont.owner        
                         
         self.tip = self.children[0]
         
         self.bullet_name = "Bullet"
         
-        self.range = 15
-        self.accuracy = 1
+        self.range = 30
+        self.accuracy = .99
         self.ammo = 50
         self.visible = True
         
@@ -33,10 +34,14 @@ class Gun(types.KX_GameObject):
             bullet["direction"] = mat_rot * self.worldOrientation.col[1].copy()
             bullet["range"] = self.range
         else:
-            #play reloading animation + sound
-            print("Realoading")
-            self.ammo = 50
+            timer = Timer(2, self.reload)
+            #print("Reloading")
+            timer.start()
+            #play reloading animation + sound  
         
+    
+    def reload(self):
+        self.ammo = 50
     
     def aim(self,vec):
         delta = vec - self.worldPosition

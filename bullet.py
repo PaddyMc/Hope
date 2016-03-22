@@ -9,7 +9,7 @@ class Bullet(types.KX_GameObject):
         self.vel = self["direction"]
         self.range = self["range"]
         
-        speed = 0.3
+        speed = 0.9
         self.vel.magnitude = speed
         
         self.vel_accum = Vector((0, 0, 0))

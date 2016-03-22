@@ -31,13 +31,13 @@ class PlayerClient(base.Hope):
     def movement(self):
         keyPressed = self.user.keyboard.keyDown            
         
-        if keyPressed(events.EKEY):
-            #speed = 0.3
-            movement = Vector((0,self.speed,0))
+        if keyPressed(events.WKEY):
+            speed = 0.2
+            movement = Vector((0,speed,0))
             #self.arm.controller[0].activate(animation)
             self.applyMovement(movement, True)
             
-        elif keyPressed(events.DKEY):
+        elif keyPressed(events.SKEY):
             movement = Vector((0,-self.speed,0))
             self.applyMovement(movement, True)                                                       
         else:
@@ -45,11 +45,11 @@ class PlayerClient(base.Hope):
         
     def straif(self):
         keyPressed = self.user.keyboard.keyDown
-        if keyPressed(events.AKEY):
+        if keyPressed(events.QKEY):
             rotation = Vector((-self.speed,0,0))           
             self.applyMovement(rotation, True)    
             
-        elif keyPressed(events.GKEY):
+        elif keyPressed(events.EKEY):
             rotation = Vector((self.speed,0,0))
             self.applyMovement(rotation, True)
             
@@ -57,12 +57,12 @@ class PlayerClient(base.Hope):
         keyPressed = self.user.keyboard.keyDown                
         #playerCam = logic.getCurrentScene().objects['Camera']
     
-        if keyPressed(events.SKEY):
-            rotation = Vector((0,0,0.1))
+        if keyPressed(events.AKEY):
+            rotation = Vector((0,0,0.07))
             self.applyRotation(rotation, True)
                         
-        elif keyPressed(events.FKEY):
-            rotation = Vector((0,0,-0.1))
+        elif keyPressed(events.DKEY):
+            rotation = Vector((0,0,-0.07))
             self.applyRotation(rotation, True)
         
     def fire(self):
@@ -92,7 +92,8 @@ class PlayerClient(base.Hope):
     def hurting(self):
         self.health = self.arm.children[0]["healt"] 
             
-        if(self.health<0):
+        if(self.health<-250):
+            self.endObject()
             pass
             #print("DEAD")         
         

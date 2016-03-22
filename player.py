@@ -3,8 +3,10 @@ from mathutils import Vector
 from key import StrategyKey
 import base
 from gun import Gun
+from threading import Timer
 from fireCommand import FireCommand
 from aimCommand import AimCommand
+from shootFurther import ShootFurther
 
 strategyKey = StrategyKey()
 
@@ -27,22 +29,24 @@ class Player(base.Hope):
             if "player_armature" in child.name:
                 self.arm = child
         
-        animation = self.arm.actuators["Action"]        
+        #animation = self.arm.actuators["Action"]        
         #print(self.arm.children[0]["healt"])
         
+        
+        #self.hud()
         #self.weapon.range = 25
         #self.user = self["user"]
         
     def movement(self):
         keyPressed = strategyKey.keyDown                               
             
-        if keyPressed(events.EKEY):
-            speed = 0.5
+        if keyPressed(events.WKEY):
+            speed = 0.4
             movement = Vector((0,speed,0))
             #self.arm.controller[0].activate(animation)
             self.applyMovement(movement, True)
             
-        elif keyPressed(events.DKEY):            
+        elif keyPressed(events.SKEY):            
             movement = Vector((0,-self.speed,0))
             self.applyMovement(movement, True)                                                       
         else:
@@ -50,11 +54,11 @@ class Player(base.Hope):
         
     def straif(self):
         keyPressed = strategyKey.keyDown
-        if keyPressed(events.AKEY):            
+        if keyPressed(events.QKEY):            
             rotation = Vector((-self.speed,0,0))           
             self.applyMovement(rotation, True)    
             
-        elif keyPressed(events.GKEY):
+        elif keyPressed(events.EKEY):
             rotation = Vector((self.speed,0,0))
             self.applyMovement(rotation, True) 
         
@@ -62,11 +66,11 @@ class Player(base.Hope):
         keyPressed = strategyKey.keyDown                
         #playerCam = logic.getCurrentScene().objects['Camera']
     
-        if keyPressed(events.SKEY):
+        if keyPressed(events.AKEY):
             rotation = Vector((0,0,0.1))
             self.applyRotation(rotation, True)
                         
-        elif keyPressed(events.FKEY):
+        elif keyPressed(events.DKEY):
             rotation = Vector((0,0,-0.1))
             self.applyRotation(rotation, True)
                                   
@@ -77,14 +81,16 @@ class Player(base.Hope):
         if keyPressed(events.SPACEKEY):
             self.fireCommand.execute()
     
-    def weaponSwitch(self):
+    def reload(self):
         keyPressed = strategyKey.keyDown
-        # impliment weapon switch
-                        
-                
-    def aiming(self):
-        # impliment aim with weapon
-        pass
+        if keyPressed(events.RKEY):
+            timer = Timer(2, self.weapon.reload)
+            #print("Reloading")
+            timer.start()
+            
+        #pass
+        #keyPressed = strategyKey.keyDown
+        # impliment weapon switch                        
                 
     def hurting(self):
         keyPressed = strategyKey.keyTouch
@@ -96,11 +102,25 @@ class Player(base.Hope):
             print(self.health)  
             
         if(self.health<0):
-            pass
+            #passp
+            logic.restartGame()
+            #pass
             #print("DEAD")   
             
-    def animation(self):
-        pass
+    def hud(self):
+        sceneList = logic.getSceneList()
+        #displayAmmo = None
+        #print(sceneList[1])
+        try:
+            if(sceneList):#.objects["Ammo.001"]
+                displayAmmo = sceneList[1].objects["Ammo.001"]
+                displayHealth = sceneList[1].objects["Health.001"]
+                displayAmmo.text = str(self.weapon.ammo)
+                displayHealth.text = str(self.health)            
+        except:
+            pass#print("No")        
+        #print(displayAmmo)
+        #pass
         
     def getThreat(self):
         #threats = list()
@@ -121,7 +141,7 @@ class Player(base.Hope):
 
 
 def createPlayer(own):
-    return Player(own)
+    return ShootFurther(Player(own))
     
 def main(cont):
     own = cont.owner
@@ -134,5 +154,7 @@ def main(cont):
     own.hurting()
     own.aimAtEnemy()
     own.straif()
+    own.reload()
+    own.hud()
 
 

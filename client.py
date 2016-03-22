@@ -108,7 +108,7 @@ class Client:
                             scene = logic.getCurrentScene()
                            
                             spawner = scene.objects["SpawnerEnemy"]
-                            enemy = scene.addObject("enemy_nav.003", spawner)
+                            enemy = scene.addObject("enemy_nav", spawner)
                             self.enemies[k[0]] = enemy
                              
                         elif k[0] == "enemy_mesh_basic.002":
@@ -116,7 +116,7 @@ class Client:
                             scene = logic.getCurrentScene()
                            
                             spawner = scene.objects["SpawnerEnemy1"]
-                            enemy = scene.addObject("enemy_nav.000", spawner)
+                            enemy = scene.addObject("enemy_nav.001", spawner)
                             self.enemies[k[0]] = enemy 
                         
                         elif k[0] == "enemy_mesh_basic.003":
@@ -124,7 +124,7 @@ class Client:
                             scene = logic.getCurrentScene()
                            
                             spawner = scene.objects["SpawnerEnemy2"]
-                            enemy = scene.addObject("enemy_nav.000", spawner)
+                            enemy = scene.addObject("enemy_nav.002", spawner)
                             self.enemies[k[0]] = enemy
                             
                         elif k[0] == "enemy_mesh_basic.001":
@@ -132,19 +132,31 @@ class Client:
                             scene = logic.getCurrentScene()
                            
                             spawner = scene.objects["SpawnerEnemy3"]
-                            enemy = scene.addObject("enemy_nav.000", spawner)
+                            enemy = scene.addObject("enemy_nav.003", spawner)
+                            self.enemies[k[0]] = enemy   
+                             
+                        elif k[0] == "enemy_mesh_basic.004":
+                            #print(k)
+                            scene = logic.getCurrentScene()
+                           
+                            spawner = scene.objects["SpawnerEnemy4"]
+                            enemy = scene.addObject("enemy_nav.004", spawner)
                             self.enemies[k[0]] = enemy    
                         
                     elif k[0] in self.enemies:
                         enemy = self.enemies[k[0]]
-                        #print(state[k][0])
+                        #print(state)
                         #print(k[1])
                         if k[1] < 0 :
-                            enemy.endObject()                        
+                            enemy.endObject() 
+                            #self.enemies.remove(enemy)                       
                         else:
                             enemy.worldPosition = Vector(state[k][0])
+                            #print(enemy.worldOrientation)
+                            #enemy.worldOrientation = (Vector(state[k][1]),Vector(state[k][2]),Vector(state[k][3]))
                             enemy.worldOrientation.col[0] = Vector(state[k][1])
                             enemy.worldOrientation.col[1] = Vector(state[k][2])
+                            enemy.worldOrientation.col[2] = Vector(state[k][3])
                                                
                     
                     if not k in self.players:
@@ -166,8 +178,8 @@ class Client:
                         player.worldOrientation.col[1] = Vector(state[k][2])
                         
                     
-                    if k == "WinningCone":
-                        #print(state[k])
+                    if k == "Missile":
+                        #print(state[k])p
                         if state[k] == 0:
                             cont = bge.logic.getCurrentController()
                             fin = cont.actuators["Game"]
@@ -176,10 +188,13 @@ class Client:
                             print("End of Game Client")
                               
             except socket.error:
+                print("Cunty")
+            finally:
+                print("Close socket")
                 break
             
 
-client = Client(server_ip="172.17.9.243", server_port=9957)
+client = Client(server_ip="192.168.1.56", server_port=9999)
            
 def main():
     #threadMain = Thread(target=client.main)

@@ -16,7 +16,7 @@ class Barrier(types.KX_GameObject):
                 count += 1                
                 #print(count)
           
-        if not count:#not count:
+        if count<=1:#not count:
             movement = Vector((0,0,1))
             
             self.applyMovement(movement, True)

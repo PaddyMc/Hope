@@ -15,27 +15,27 @@ def enemyShooter():
     
     scene = logic.getCurrentScene()
     gun = None
+    guns = list()
     #gun = scene.objects["AK.004"]
     for gobj in scene.objects:
-            if gobj.name == "AK.003":
-                gun = gobj 
+            if "AK" in gobj.name:
+                #print(gobj.name)                
+                guns.append(gobj) 
     
-    if gun:
+    if guns:
         #keyPressed = strategyKey.keyDown
-        
-        fireCommand = FireCommand(gun)
-        aimCommand = AimCommand(gun)
-        
-        target = getThreat(scene,gun)
+        for gun in guns:
+            fireCommand = FireCommand(gun)
+            aimCommand = AimCommand(gun)
             
-        #if keyPressed(events.SPACEKEY):
-              
-            
-        if target:            
-            aimCommand.execute(target.worldPosition)
-            fireCommand.execute()
-            #print("pew") 
-
+            target = getThreat(scene,gun)
+                
+            #if keyPressed(events.SPACEKEY):                                  
+            if target:            
+                aimCommand.execute(target.worldPosition)
+                fireCommand.execute()
+                #print("pew")
+    
 
 def getThreat(scene,gun):
         for gobj in scene.objects:

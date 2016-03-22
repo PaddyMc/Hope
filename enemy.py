@@ -30,7 +30,7 @@ class Enemy(base.Hope):
     def getThreat(self):
         
         for gobj in self.scene.objects:
-            if "player_mesh" in gobj.name:
+            if "player" in gobj.name:
                 delta = gobj.worldPosition - self.worldPosition
                 if delta.magnitude < self.sense_range:                    
                     return gobj
